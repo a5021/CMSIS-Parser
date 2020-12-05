@@ -1,2 +1,2 @@
 # CMSIS-Parser
-Python code to generate an ARM microcontroller sources
+Python code to generate ARM microcontroller firmware sources
