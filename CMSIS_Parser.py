@@ -2,30 +2,22 @@
 
 import re
 
-rgx = r"#define\s+(\w+)\s+\(\((\w+)\s+\*\)(\w+)"
-
 s=''
 with open('stm32f107xc.h') as f:
   s = f.read()
 
-m = re.finditer(rgx, s, re.MULTILINE | re.DOTALL)
-
-for n in m:
-  print (n.group(1), n.group(2), n.group(3))
+for m in re.finditer(r"#define\s+(\w+)\s+\(\((\w+)\s+\*\)(\w+)", s, re.MULTILINE | re.DOTALL):
+  print (m.group(1), m.group(2), m.group(3))
 
 print()
 
-rgx = r"typedef struct\s+?\{(.*?)\}(\s+|)(\w+)\s*;"
+for m in re.finditer(r"typedef struct\s+?\{(.*?)\}(\s+|)(\w+)\s*;", s, re.MULTILINE | re.DOTALL):
+  print (m.group(3) + ':', end='')
+  g = m.group(1)
 
-#m = re.finditer(rgx, s, re.MULTILINE | re.DOTALL)
-for n in re.finditer(rgx, s, re.MULTILINE | re.DOTALL):
-  print (n.group(3) + ':', end='')
-  g = n.group(1)
-  subst = "\\1"
-
-  res = re.sub(r"__\w+?\s+uint\d+_t\s*(\w+);", subst, g, 0, re.MULTILINE | re.DOTALL)
+  res = re.sub(r"__\w+?\s+uint\d+_t\s*(\w+);", "\\1", g, 0, re.MULTILINE | re.DOTALL)
   y = res.split('\n')
 
   for x in y:
-    if x.find('RESERVED') == -1:
+    if x.upper().find('RESERVED') == -1:
       print(x)
