@@ -5,7 +5,7 @@ import re
 rgx = r"#define\s+(\w+)\s+\(\((\w+)\s+\*\)(\w+)"
 
 s=''
-with open('stm32f103xg.h') as f:
+with open('stm32f107xc.h') as f:
   s = f.read()
 
 m = re.finditer(rgx, s, re.MULTILINE | re.DOTALL)
@@ -17,8 +17,8 @@ print()
 
 rgx = r"typedef struct\s+?\{(.*?)\}(\s+|)(\w+)\s*;"
 
-m = re.finditer(rgx, s, re.MULTILINE | re.DOTALL)
-for n in m:
+#m = re.finditer(rgx, s, re.MULTILINE | re.DOTALL)
+for n in re.finditer(rgx, s, re.MULTILINE | re.DOTALL):
   print (n.group(3) + ':', end='')
   g = n.group(1)
   subst = "\\1"
