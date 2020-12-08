@@ -43,7 +43,9 @@ for m in re.finditer(r"typedef struct\s+?\{(.*?)\}(\s+|)(\w+)\s*;", s, re.MULTIL
 for x in peripheral:
   for y in register_set:
      if x[1] == y[0]:
-       print('/* =================================================================== [', x[0], 'init code follows ] ======================================================================================= */')
+       span = '  /* =================================================================== [' + str(x[0]) + ' init code follows ] '
+       span = span.ljust(186,'=') + '*/'
+       print(span)
        for z in y:
          if z != y[0] and z != '':
            rname = re.sub(r'(.*?)\d+', "\\1", x[0], 0, re.DOTALL)
@@ -61,7 +63,9 @@ for x in peripheral:
            print('\n    0   '.ljust(55) + '\\' + '\n  )')
            print('  #if ' + init_str + ' != 0') 
            print('    ' + x[0] + '->' + z[0] + ' = ' + init_str + ';')
-           print('  #endif\n') 
+           print('  #endif')
+           print('  #undef', init_str)
+           print()
 
            
 
