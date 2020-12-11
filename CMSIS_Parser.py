@@ -2,19 +2,25 @@
 
 import re
 
+#source_file = 'stm32l433xx.h'
+#source_file = 'stm32f446xx.h'
+source_file = 'stm32f407xx.h'
+
 s=''
-with open('stm32f103xb.h') as f:
+with open(source_file) as f:
   s = f.read()
 
 peripheral = []
 
-for m in re.finditer(r"#define\s+(\w+)\s+\(\((\w+)\s+\*\)(\w+)", s, re.MULTILINE | re.DOTALL):
+#for m in re.finditer(r"#define\s+(\w+)\s+\(\((\w+)\s+\*\)(\w+)", s, re.MULTILINE | re.DOTALL):
+for m in re.finditer(r"#define\s+(\w+)\W+(\w+_TypeDef).+?(\w+_BASE)", s, re.MULTILINE):
   peripheral.append([m.group(1), m.group(2), m.group(3)])
 
 register_set = []
 
-for m in re.finditer(r"typedef struct\s+?\{(.*?)\}(\s+|)(\w+)\s*;", s, re.MULTILINE | re.DOTALL):
-  type_name = m.group(3)
+#for m in re.finditer(r"typedef struct\s+?\{(.*?)\}(\s+|)(\w+)\s*;", s, re.MULTILINE | re.DOTALL):
+for m in re.finditer(r"typedef struct\s+{\s+(.*?)}\s*(\S+)\s*;", s, re.MULTILINE | re.DOTALL):
+  type_name = m.group(2)
   g = m.group(1)
 
   res = re.sub(r".*?((uint\d*?_t)|(_TypeDef))\s+?([A-Za-z\d\[\]]+)\s*;\s*(\/\*\s*(.*?)\s*?\*\/|())", "\\4 `%`\\6\\n", g, 0, re.MULTILINE | re.DOTALL)
