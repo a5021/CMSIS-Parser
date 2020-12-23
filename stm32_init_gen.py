@@ -105,7 +105,7 @@ function_name = '__STATIC_INLINE void ' + sys.argv[2].lower() + '_init(void) {\n
 module_name = sys.argv[2].upper() + '_INIT'
 
 h_file_hdr = '#ifndef __' + module_name +'_H\n#define __' + module_name + '_H\n\n#ifdef __cplusplus\n  extern "C" {\n#endif /* __cplusplus */\n'
-h_file_ftr = '#ifdef __cplusplus\n  }\n#endif /* __cplusplus */\n#endif /* __' + module_name + '_H  */\n'
+h_file_ftr = '#ifdef __cplusplus\n  }\n#endif /* __cplusplus   */\n#endif /* __' + module_name + '_H  */\n'
 
 if __name__ == "__main__":
 
@@ -143,7 +143,9 @@ if __name__ == "__main__":
     print(h_file_hdr)
     print()
     print(function_name)
-    print(init_peripheral(s, sys.argv[2]), end='')
+    print('  /* Note: all macros are imported from', src_file_name, '*/')
+    print()
+    print(' ', init_peripheral(s, sys.argv[2]), end='')
     print('\n}')
     print()
     print(h_file_ftr)
